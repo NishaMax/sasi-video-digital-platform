@@ -1,33 +1,36 @@
 import { X, Check } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 interface PreferencesSheetProps {
   isOpen: boolean;
   onClose: () => void;
   language: string;
-  setLanguage: (lang: string) => void;
+  setLanguage: (lang: any) => void;
   branch: string;
   setBranch: (branch: string) => void;
 }
 
 export function PreferencesSheet({ isOpen, onClose, language, setLanguage, branch, setBranch }: PreferencesSheetProps) {
+  const { t } = useLanguage();
+  
   if (!isOpen) return null;
 
   const languages = [
     { id: "english", label: "English", code: "GB" },
-    { id: "sinhala", label: "Sinhala", code: "LK" },
-    { id: "tamil", label: "Tamil", code: "IN" },
+    { id: "sinhala", label: "සිංහල", code: "LK" },
+    { id: "tamil", label: "தமிழ்", code: "IN" },
   ];
 
   const branches = [
     { 
       id: "kalawana", 
       name: "Kalawana Branch", 
-      desc: "Main Branch - Ratnapura District" 
+      desc: t("home.mainBranch")
     },
     { 
       id: "ratnapura", 
       name: "Ratnapura Branch", 
-      desc: "Outer Circular Road, Ratnapura" 
+      desc: t("home.servicesAvailable")
     }
   ];
 

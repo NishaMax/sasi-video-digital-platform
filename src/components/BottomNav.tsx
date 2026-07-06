@@ -1,15 +1,18 @@
 import { Home, Grid, Wrench, MapPin, User } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export type Tab = "home" | "products" | "services" | "branches" | "contact";
 
 export function BottomNav({ activeTab, onChange, branch }: { activeTab: Tab, onChange: (tab: Tab) => void, branch?: string }) {
+  const { t } = useLanguage();
+
   const tabs = [
-    { id: "home", label: "Home", icon: Home },
-    { id: "products", label: "Products", icon: Grid },
+    { id: "home", label: t("nav.home"), icon: Home },
+    { id: "products", label: t("nav.products"), icon: Grid },
     // Only show services if it's NOT kalawana
-    ...(branch !== "kalawana" ? [{ id: "services", label: "Services", icon: Wrench }] : []),
-    { id: "branches", label: "Branches", icon: MapPin },
-    { id: "contact", label: "Contact", icon: User }
+    ...(branch !== "kalawana" ? [{ id: "services", label: t("nav.services"), icon: Wrench }] : []),
+    { id: "branches", label: t("nav.branches"), icon: MapPin },
+    { id: "contact", label: t("nav.contact"), icon: User }
   ];
 
   return (
@@ -24,7 +27,7 @@ export function BottomNav({ activeTab, onChange, branch }: { activeTab: Tab, onC
             }`}
           >
             <item.icon className="w-[18px] h-[18px] stroke-[2]" />
-            <span className="text-[9px] font-semibold tracking-wide">{item.label}</span>
+            <span className="text-[9px] font-semibold tracking-wide truncate w-full text-center">{item.label}</span>
           </button>
         ))}
       </div>

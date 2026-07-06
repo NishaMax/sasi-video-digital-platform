@@ -133,21 +133,21 @@ export function MobileHome({
         <div className="grid grid-cols-2 gap-3 mb-3">
           <button onClick={() => onNavigate("products")} className="bg-sasi-red hover:bg-red-700 active:scale-[0.97] text-white flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all">
             <Grid className="w-4 h-4" />
-            Browse Products
+            {t("home.browseProducts")}
           </button>
           <a href="https://wa.me/94764177746" target="_blank" rel="noopener noreferrer" className="bg-[#22C55E] hover:bg-green-600 active:scale-[0.97] text-white flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all shadow-[0_0_20px_rgba(34,197,94,0.25)]">
             <MessageCircle className="w-4 h-4 fill-current" />
-            WhatsApp
+            {t("home.whatsapp")}
           </a>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <a href="tel:0764177746" className="bg-transparent border border-gray-800 hover:border-gray-600 active:scale-[0.97] text-gray-300 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-all">
             <Phone className="w-4 h-4" />
-            Call Now
+            {t("home.callNow")}
           </a>
           <a href={branch === "kalawana" ? "https://maps.google.com/?q=Kalawana,Sri+Lanka" : "https://maps.google.com/?q=Outer+Circular+Road,Ratnapura,Sri+Lanka"} target="_blank" rel="noopener noreferrer" className="bg-transparent border border-gray-800 hover:border-gray-600 active:scale-[0.97] text-gray-300 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-all">
             <MapPin className="w-4 h-4" />
-            Find Branch
+            {t("home.findBranch")}
           </a>
         </div>
       </div>
@@ -157,9 +157,9 @@ export function MobileHome({
       {/* ═══════════════════════════════════════════ */}
       <div className="mb-7">
         <div className="flex justify-between items-center px-5 mb-4">
-          <h2 className="text-xs font-bold text-white uppercase tracking-wider">Featured Categories</h2>
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider">{t("home.featuredCategories")}</h2>
           <span onClick={() => onNavigate("products")} className="text-xs text-sasi-red font-semibold cursor-pointer hover:text-red-400 transition-colors flex items-center gap-0.5">
-            View All <ChevronRight className="w-3.5 h-3.5" />
+            {t("home.viewAll")} <ChevronRight className="w-3.5 h-3.5" />
           </span>
         </div>
         <div className="flex gap-3 px-5 overflow-x-auto pb-2 scrollbar-hide">
@@ -221,9 +221,9 @@ export function MobileHome({
       {branch === "ratnapura" && (
         <div className="px-5 mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xs font-bold text-white uppercase tracking-wider">Our Services</h2>
+            <h2 className="text-xs font-bold text-white uppercase tracking-wider">{t("home.ourServices")}</h2>
             <span onClick={() => onNavigate("services")} className="text-xs text-sasi-red font-semibold cursor-pointer hover:text-red-400 transition-colors flex items-center gap-0.5">
-              View All <ChevronRight className="w-3.5 h-3.5" />
+              {t("home.viewAll")} <ChevronRight className="w-3.5 h-3.5" />
             </span>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -244,13 +244,13 @@ export function MobileHome({
       {/* OUR BRANCHES */}
       {/* ═══════════════════════════════════════════ */}
       <div className="px-5 mb-8">
-        <h2 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Our Branches</h2>
+        <h2 className="text-xs font-bold text-white uppercase tracking-wider mb-4">{t("home.ourBranches")}</h2>
         
         {/* Kalawana Branch */}
         <div className="bg-[#121212] border border-gray-800/60 rounded-2xl p-4 mb-3">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-sm font-bold text-white">Kalawana Branch</h3>
-            <span className="bg-sasi-red text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase">Main Branch</span>
+            <span className="bg-sasi-red text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase">{t("home.mainBranch")}</span>
           </div>
           <p className="text-[10px] text-gray-500 mb-3 flex items-center gap-1">
             <MapPin className="w-3 h-3 text-gray-600 flex-shrink-0" />
@@ -272,7 +272,7 @@ export function MobileHome({
         <div className="bg-[#121212] border border-gray-800/60 rounded-2xl p-4">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-sm font-bold text-white">Ratnapura Branch</h3>
-            <span className="bg-green-700 text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase">Services Available</span>
+            <span className="bg-green-700 text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase">{t("home.servicesAvailable")}</span>
           </div>
           <p className="text-[10px] text-gray-500 mb-3 flex items-center gap-1">
             <MapPin className="w-3 h-3 text-gray-600 flex-shrink-0" />
