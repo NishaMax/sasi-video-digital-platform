@@ -5,6 +5,11 @@ import Image from "next/image";
 import { LanguageSelection } from "@/components/LanguageSelection";
 import { BranchSelection } from "@/components/BranchSelection";
 import { MobileHome } from "@/components/MobileHome";
+import { MobileProducts } from "@/components/MobileProducts";
+import { MobileServices } from "@/components/MobileServices";
+import { MobileBranches } from "@/components/MobileBranches";
+import { MobileContact } from "@/components/MobileContact";
+import { BottomNav, Tab } from "@/components/BottomNav";
 
 export default function Home() {
   const [doorState, setDoorState] = useState<"closed" | "opening" | "open">("closed");
@@ -15,17 +20,11 @@ export default function Home() {
   
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab>("home");
 
   useEffect(() => {
     if (currentView !== "splash") return;
 
-    // Sequence:
-    // 0ms: Closed
-    // 500ms: Start opening doors
-    // 1300ms: Doors fully open, start revealing logo
-    // 2500ms: Logo fully revealed
-    // 3500ms: Logo moves to normal state/fade out to show content
-    
     const t1 = setTimeout(() => {
       setDoorState("opening");
     }, 500);
@@ -108,9 +107,18 @@ export default function Home() {
         />
       )}
 
-      {/* Stage 4: Homepage */}
+      {/* Stage 4: Main Application Wrapper with Bottom Nav */}
       {currentView === "home" && selectedBranch && (
-        <MobileHome branch={selectedBranch} />
+        <div className="w-full relative min-h-screen">
+          {activeTab === "home" && <MobileHome branch={selectedBranch} />}
+          {activeTab === "products" && <MobileProducts />}
+          {activeTab === "services" && <MobileServices />}
+          {activeTab === "branches" && <MobileBranches />}
+          {activeTab === "contact" && <MobileContact />}
+          
+          {/* Global Bottom Navigation */}
+          <BottomNav activeTab={activeTab} onChange={setActiveTab} />
+        </div>
       )}
     </main>
   );
