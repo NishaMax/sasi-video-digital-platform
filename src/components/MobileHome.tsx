@@ -10,12 +10,14 @@ export function MobileHome({
   branch, 
   language,
   onProductClick,
-  onOpenPreferences
+  onOpenPreferences,
+  onNavigate
 }: { 
   branch: string, 
   language: string,
   onProductClick: (product: any) => void,
-  onOpenPreferences: () => void
+  onOpenPreferences: () => void,
+  onNavigate: (tab: any) => void
 }) {
   const branchName = branch === "kalawana" ? "Kalawana" : "Ratnapura";
   const branchPhone = branch === "kalawana" ? "070 480 1560" : "076 417 7746";
@@ -126,24 +128,24 @@ export function MobileHome({
       {/* ═══════════════════════════════════════════ */}
       <div className="px-5 mb-7">
         <div className="grid grid-cols-2 gap-3 mb-3">
-          <button className="bg-sasi-red hover:bg-red-700 active:scale-[0.97] text-white flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all">
+          <button onClick={() => onNavigate("products")} className="bg-sasi-red hover:bg-red-700 active:scale-[0.97] text-white flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all">
             <Grid className="w-4 h-4" />
             Browse Products
           </button>
-          <button className="bg-[#22C55E] hover:bg-green-600 active:scale-[0.97] text-white flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all shadow-[0_0_20px_rgba(34,197,94,0.25)]">
+          <a href="https://wa.me/94764177746" target="_blank" rel="noopener noreferrer" className="bg-[#22C55E] hover:bg-green-600 active:scale-[0.97] text-white flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all shadow-[0_0_20px_rgba(34,197,94,0.25)]">
             <MessageCircle className="w-4 h-4 fill-current" />
             WhatsApp
-          </button>
+          </a>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <button className="bg-transparent border border-gray-800 hover:border-gray-600 active:scale-[0.97] text-gray-300 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-all">
+          <a href="tel:0764177746" className="bg-transparent border border-gray-800 hover:border-gray-600 active:scale-[0.97] text-gray-300 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-all">
             <Phone className="w-4 h-4" />
             Call Now
-          </button>
-          <button className="bg-transparent border border-gray-800 hover:border-gray-600 active:scale-[0.97] text-gray-300 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-all">
+          </a>
+          <a href={branch === "kalawana" ? "https://maps.google.com/?q=Kalawana,Sri+Lanka" : "https://maps.google.com/?q=Outer+Circular+Road,Ratnapura,Sri+Lanka"} target="_blank" rel="noopener noreferrer" className="bg-transparent border border-gray-800 hover:border-gray-600 active:scale-[0.97] text-gray-300 flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-sm transition-all">
             <MapPin className="w-4 h-4" />
             Find Branch
-          </button>
+          </a>
         </div>
       </div>
 
@@ -153,7 +155,7 @@ export function MobileHome({
       <div className="mb-7">
         <div className="flex justify-between items-center px-5 mb-4">
           <h2 className="text-xs font-bold text-white uppercase tracking-wider">Featured Categories</h2>
-          <span className="text-xs text-sasi-red font-semibold cursor-pointer hover:text-red-400 transition-colors flex items-center gap-0.5">
+          <span onClick={() => onNavigate("products")} className="text-xs text-sasi-red font-semibold cursor-pointer hover:text-red-400 transition-colors flex items-center gap-0.5">
             View All <ChevronRight className="w-3.5 h-3.5" />
           </span>
         </div>
@@ -213,25 +215,27 @@ export function MobileHome({
       {/* ═══════════════════════════════════════════ */}
       {/* OUR SERVICES */}
       {/* ═══════════════════════════════════════════ */}
-      <div className="px-5 mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xs font-bold text-white uppercase tracking-wider">Our Services</h2>
-          <span className="text-xs text-sasi-red font-semibold cursor-pointer hover:text-red-400 transition-colors flex items-center gap-0.5">
-            View All <ChevronRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {services.map((service, i) => (
-            <div key={i} className="bg-[#121212] border border-gray-800/60 rounded-2xl p-4 cursor-pointer hover:border-gray-700 transition-colors">
-              <div className="w-9 h-9 rounded-xl bg-sasi-red/10 flex items-center justify-center mb-3">
-                <service.icon className="w-4 h-4 text-sasi-red stroke-[1.5]" />
+      {branch === "ratnapura" && (
+        <div className="px-5 mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xs font-bold text-white uppercase tracking-wider">Our Services</h2>
+            <span onClick={() => onNavigate("services")} className="text-xs text-sasi-red font-semibold cursor-pointer hover:text-red-400 transition-colors flex items-center gap-0.5">
+              View All <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {services.map((service, i) => (
+              <div key={i} className="bg-[#121212] border border-gray-800/60 rounded-2xl p-4 cursor-pointer hover:border-gray-700 transition-colors">
+                <div className="w-9 h-9 rounded-xl bg-sasi-red/10 flex items-center justify-center mb-3">
+                  <service.icon className="w-4 h-4 text-sasi-red stroke-[1.5]" />
+                </div>
+                <h3 className="text-xs font-semibold text-white leading-tight mb-1">{service.name}</h3>
+                <p className="text-[10px] text-gray-500 leading-relaxed line-clamp-2">{service.desc}</p>
               </div>
-              <h3 className="text-xs font-semibold text-white leading-tight mb-1">{service.name}</h3>
-              <p className="text-[10px] text-gray-500 leading-relaxed line-clamp-2">{service.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ═══════════════════════════════════════════ */}
       {/* OUR BRANCHES */}
@@ -250,14 +254,14 @@ export function MobileHome({
             Main Street, Kalawana
           </p>
           <div className="flex gap-2">
-            <button className="flex-1 bg-transparent border border-gray-800 text-gray-300 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-medium hover:border-gray-600 transition-colors">
+            <a href="tel:0764177746" className="flex-1 bg-transparent border border-gray-800 text-gray-300 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-medium hover:border-gray-600 transition-colors">
               <Phone className="w-3 h-3" />
               Call Now
-            </button>
-            <button className="flex-1 bg-[#22C55E] text-white flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold hover:bg-green-600 transition-colors">
+            </a>
+            <a href="https://wa.me/94764177746" target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#22C55E] text-white flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold hover:bg-green-600 transition-colors">
               <MessageCircle className="w-3 h-3 fill-current" />
               WhatsApp
-            </button>
+            </a>
           </div>
         </div>
 
@@ -272,23 +276,23 @@ export function MobileHome({
             Outer Circular Road, Ratnapura
           </p>
           <div className="flex gap-2">
-            <button className="flex-1 bg-transparent border border-gray-800 text-gray-300 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-medium hover:border-gray-600 transition-colors">
+            <a href="tel:0764177746" className="flex-1 bg-transparent border border-gray-800 text-gray-300 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-medium hover:border-gray-600 transition-colors">
               <Phone className="w-3 h-3" />
               Call Now
-            </button>
-            <button className="flex-1 bg-[#22C55E] text-white flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold hover:bg-green-600 transition-colors">
+            </a>
+            <a href="https://wa.me/94764177746" target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#22C55E] text-white flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-semibold hover:bg-green-600 transition-colors">
               <MessageCircle className="w-3 h-3 fill-current" />
               WhatsApp
-            </button>
+            </a>
           </div>
         </div>
       </div>
 
       {/* Floating WhatsApp Button */}
       <div className="fixed bottom-20 right-5 z-40">
-        <button className="bg-[#22C55E] text-white p-3 rounded-full shadow-[0_0_25px_rgba(34,197,94,0.35)] hover:bg-green-600 active:scale-95 transition-all flex items-center justify-center">
+        <a href="https://wa.me/94764177746" target="_blank" rel="noopener noreferrer" className="bg-[#22C55E] text-white p-3 rounded-full shadow-[0_0_25px_rgba(34,197,94,0.35)] hover:bg-green-600 active:scale-95 transition-all flex items-center justify-center">
           <MessageCircle className="w-5 h-5 fill-current" />
-        </button>
+        </a>
       </div>
       
     </div>

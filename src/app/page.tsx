@@ -122,6 +122,7 @@ export default function Home() {
               language={selectedLanguage}
               onProductClick={setSelectedProduct} 
               onOpenPreferences={() => setIsPreferencesOpen(true)}
+              onNavigate={setActiveTab}
             />
           )}
           {activeTab === "products" && <MobileProducts onProductClick={setSelectedProduct} />}
