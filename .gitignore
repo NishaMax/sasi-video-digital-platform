@@ -46,4 +46,11 @@ phases.txt
 .idea/
 scratch/
 
+# Prisma generated files
 /src/generated/prisma
+
+# Keep prisma/migrations tracked (schema history)
+# But ignore any local dev DB files
+*.db
+*.db-journal
+prisma/dev.db

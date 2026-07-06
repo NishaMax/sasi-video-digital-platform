@@ -7,15 +7,25 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 
+import { getIcon } from "@/lib/icons";
+
 export function MobileHome({ 
   branch, 
   language,
+  categories,
+  products,
+  services,
+  isLoading,
   onProductClick,
   onOpenPreferences,
   onNavigate
 }: { 
   branch: string, 
   language: string,
+  categories: any[],
+  products: any[],
+  services: any[],
+  isLoading: boolean,
   onProductClick: (product: any) => void,
   onOpenPreferences: () => void,
   onNavigate: (tab: any) => void
@@ -25,28 +35,8 @@ export function MobileHome({
   const branchName = branch === "kalawana" ? "Kalawana" : "Ratnapura";
   const langCode = language === "english" ? "GB" : language === "sinhala" ? "LK" : "IN";
 
-  const categories = [
-    { name: "Televisions", count: "15 Items", icon: Tv },
-    { name: "Audio Systems", count: "12 Items", icon: Speaker },
-    { name: "Mobile Accessories", count: "25 Items", icon: Smartphone },
-    { name: "CCTV & Security", count: "8 Items", icon: Shield },
-    { name: "Networking", count: "10 Items", icon: Wifi },
-    { name: "Headphones", count: "18 Items", icon: Headphones }
-  ];
-
-  const featuredProducts = [
-    { name: 'Samsung 42" 4K Smart TV', badge: "In Stock", badgeColor: "bg-sasi-red", icon: Tv },
-    { name: "Sony HT-S40R Soundbar", badge: "Fast Service", badgeColor: "bg-green-600", icon: Speaker },
-    { name: "JBL Flip 6 Bluetooth Speaker", badge: "In Stock", badgeColor: "bg-sasi-red", icon: Speaker },
-    { name: "Hikvision 4-Camera CCTV Kit", badge: "In Stock", badgeColor: "bg-sasi-red", icon: Shield }
-  ];
-
-  const services = [
-    { name: "Mobile Phone Repair", desc: "Battery swap, charging port repair, software issues.", icon: Smartphone },
-    { name: "Speaker & Audio Repair", desc: "Woofer refoaming, amplifier board repair, bluetooth module replacement.", icon: Speaker },
-    { name: "TV Display Replacement", desc: "LED backlight repair, panel replacement.", icon: Monitor },
-    { name: "CCTV Installation", desc: "Professional installation of security cameras, DVR setup, remote viewing.", icon: Shield }
-  ];
+  // Take first 4 products for featured
+  const featuredProducts = products.slice(0, 4);
 
   const mapsUrl = branch === "kalawana"
     ? "https://maps.google.com/?q=Kalawana,Sri+Lanka"
@@ -139,17 +129,19 @@ export function MobileHome({
           </span>
         </div>
         <div className="flex gap-4 md:gap-8 px-5 md:px-10 lg:px-20 overflow-x-auto pb-4 scrollbar-hide md:flex-wrap md:justify-start">
-          {categories.map((cat, i) => (
+          {categories.map((cat, i) => {
+            const CatIcon = getIcon(cat.icon);
+            return (
             <div key={i} className="flex flex-col items-center gap-3 min-w-[72px] md:min-w-[90px] cursor-pointer group">
               <div className="w-[64px] h-[64px] md:w-[72px] md:h-[72px] rounded-full bg-[#161616] border border-gray-800 flex items-center justify-center group-hover:border-sasi-red/50 group-hover:scale-105 transition-all shadow-lg">
-                <cat.icon className="w-6 h-6 text-sasi-red stroke-[1.5] group-hover:text-white transition-colors" />
+                <CatIcon className="w-6 h-6 text-sasi-red stroke-[1.5] group-hover:text-white transition-colors" />
               </div>
               <div className="text-center">
                 <h3 className="font-medium text-[10px] md:text-xs text-gray-300 leading-tight">{cat.name}</h3>
-                <span className="text-[9px] md:text-[10px] text-gray-600 block mt-1">{cat.count}</span>
+                <span className="text-[9px] md:text-[10px] text-gray-600 block mt-1">{cat.products?.length || 0} Items</span>
               </div>
             </div>
-          ))}
+          )})}
           <div className="flex flex-col items-center gap-3 min-w-[72px] md:min-w-[90px] cursor-pointer group">
             <a
               href="https://wa.me/94764177746"
@@ -169,23 +161,32 @@ export function MobileHome({
       {/* ── FEATURED PRODUCTS ── */}
       <div className="mb-12 max-w-7xl mx-auto w-full">
         <div className="flex overflow-x-auto gap-4 px-5 md:px-10 lg:px-20 pb-4 scrollbar-hide md:grid md:grid-cols-4 md:overflow-visible">
-          {featuredProducts.map((product, i) => (
+          {featuredProducts.map((product, i) => {
+            const ProdIcon = getIcon(product.icon);
+            return (
             <div
               key={i}
-              onClick={() => onProductClick({ ...product, desc: "Premium product available at Sasi Video. Ask us for more details." })}
+              onClick={() => onProductClick(product)}
               className="min-w-[160px] max-w-[160px] md:min-w-full md:max-w-full bg-[#121212] border border-gray-800/60 rounded-2xl overflow-hidden cursor-pointer group hover:border-gray-600 hover:-translate-y-1 transition-all flex-shrink-0 shadow-lg"
             >
               <div className="w-full h-[120px] md:h-[180px] bg-[#1A1A1A] flex items-center justify-center relative overflow-hidden">
-                <product.icon className="w-12 h-12 md:w-16 md:h-16 text-gray-700 stroke-[1] group-hover:scale-110 transition-transform duration-500" />
-                <span className={`absolute top-2 left-2 ${product.badgeColor} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide`}>
-                  {product.badge}
-                </span>
+                {product.imageUrl ? (
+                  <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                ) : (
+                  <ProdIcon className="w-12 h-12 md:w-16 md:h-16 text-gray-700 stroke-[1] group-hover:scale-110 transition-transform duration-500" />
+                )}
+                {product.badge && (
+                  <span className={`absolute top-2 left-2 ${product.badgeColor || "bg-sasi-red"} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide`}>
+                    {product.badge}
+                  </span>
+                )}
               </div>
               <div className="p-4">
                 <h3 className="text-sm font-semibold text-gray-200 leading-tight line-clamp-2 group-hover:text-white transition-colors">{product.name}</h3>
+                {product.price && <p className="text-sasi-red font-bold text-xs mt-1">Rs. {product.price.toLocaleString()}</p>}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </div>
 
@@ -202,15 +203,17 @@ export function MobileHome({
             </span>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {services.map((service, i) => (
+            {services.map((service, i) => {
+              const SvcIcon = getIcon(service.icon);
+              return (
               <div key={i} className="bg-[#121212] border border-gray-800/60 rounded-2xl p-5 cursor-pointer hover:border-gray-600 hover:-translate-y-1 transition-all shadow-lg group">
                 <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-sasi-red/10 flex items-center justify-center mb-4 group-hover:bg-sasi-red/20 transition-colors">
-                  <service.icon className="w-5 h-5 text-sasi-red stroke-[1.5]" />
+                  <SvcIcon className="w-5 h-5 text-sasi-red stroke-[1.5]" />
                 </div>
                 <h3 className="text-sm font-semibold text-white leading-tight mb-2">{service.name}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">{service.desc}</p>
+                <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">{service.description}</p>
               </div>
-            ))}
+            )})}
           </div>
         </div>
       )}

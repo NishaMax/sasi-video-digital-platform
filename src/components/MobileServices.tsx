@@ -1,40 +1,7 @@
-import { Smartphone, Speaker, Monitor, Shield, Phone, MessageCircle, Wrench } from "lucide-react";
+import { Phone, MessageCircle, Wrench } from "lucide-react";
+import { getIcon } from "@/lib/icons";
 
-export function MobileServices() {
-  const services = [
-    { 
-      name: "Mobile Phone Repair", 
-      badge: "Fast Service",
-      badgeColor: "bg-[#2563EB]",
-      desc: "Screen replacement, battery swap, charging port repair, software issues — all models.",
-      turnaround: "Same day - Both branches",
-      icon: Smartphone
-    },
-    { 
-      name: "Speaker & Audio Repair", 
-      badge: "Trusted Service",
-      badgeColor: "bg-[#F59E0B]",
-      desc: "Woofer refoaming, amplifier board repair, bluetooth module replacement, cabinet refurbishment.",
-      turnaround: "1-3 days - Kalawana only",
-      icon: Speaker
-    },
-    { 
-      name: "TV Display Replacement", 
-      badge: "Trusted Service",
-      badgeColor: "bg-[#F59E0B]",
-      desc: "LED backlight repair, panel replacement, power board fixing.",
-      turnaround: "2-5 days - Both branches",
-      icon: Monitor
-    },
-    { 
-      name: "CCTV Installation", 
-      badge: "Fast Service",
-      badgeColor: "bg-[#2563EB]",
-      desc: "Professional installation of security cameras, DVR setup, remote viewing configuration.",
-      turnaround: "Same day - Both branches",
-      icon: Shield
-    }
-  ];
+export function MobileServices({ services, isLoading }: { services: any[], isLoading: boolean }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#0A0A0A] text-white pb-28 md:pb-12 animate-in fade-in duration-500 font-sans w-full">
@@ -54,21 +21,31 @@ export function MobileServices() {
         </div>
 
         {/* Services — single column on mobile, 2-column on tablet+ */}
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 text-gray-500 gap-3">
+            <div className="w-8 h-8 border-4 border-sasi-red/20 border-t-sasi-red rounded-full animate-spin"></div>
+            <p className="text-sm">Loading services...</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {services.map((service, i) => (
+          {services.map((service, i) => {
+            const SvcIcon = getIcon(service.icon);
+            return (
             <div key={i} className="bg-[#121212] border border-gray-800/60 rounded-[24px] p-6 cursor-pointer hover:border-gray-600 hover:-translate-y-0.5 transition-all group">
               <div className="flex gap-4 mb-5">
                 <div className="w-12 h-12 rounded-xl bg-sasi-red/10 border border-sasi-red/20 flex items-center justify-center flex-shrink-0 group-hover:bg-sasi-red/20 transition-colors">
-                  <service.icon className="w-6 h-6 text-sasi-red stroke-[1.5]" />
+                  <SvcIcon className="w-6 h-6 text-sasi-red stroke-[1.5]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                     <h3 className="text-sm font-bold text-white leading-tight">{service.name}</h3>
-                    <span className={`${service.badgeColor} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide`}>
-                      {service.badge}
-                    </span>
+                    {service.badge && (
+                      <span className={`${service.badgeColor || "bg-[#2563EB]"} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide`}>
+                        {service.badge}
+                      </span>
+                    )}
                   </div>
-                  <p className="text-xs text-gray-400 leading-relaxed">{service.desc}</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{service.description}</p>
                 </div>
               </div>
               
@@ -84,8 +61,9 @@ export function MobileServices() {
                 </div>
               </div>
             </div>
-          ))}
+            )})}
         </div>
+        )}
       </div>
     </div>
   );

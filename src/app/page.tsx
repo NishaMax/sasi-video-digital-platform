@@ -13,6 +13,7 @@ import { BottomNav, Tab } from "@/components/BottomNav";
 import { ProductDetail } from "@/components/ProductDetail";
 import { PreferencesSheet } from "@/components/PreferencesSheet";
 import { LanguageProvider, Language } from "@/lib/i18n";
+import { getCategories, getProducts, getServices } from "@/actions/db";
 
 export default function Home() {
   const [doorState, setDoorState] = useState<"closed" | "opening" | "open">("closed");
@@ -28,6 +29,31 @@ export default function Home() {
   // Modals / Overlays
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
+
+  // Global Data State
+  const [categories, setCategories] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch data when branch changes
+  useEffect(() => {
+    async function loadData() {
+      setIsLoading(true);
+      const [catsRes, prodsRes, servsRes] = await Promise.all([
+        getCategories(),
+        getProducts(selectedBranch),
+        getServices()
+      ]);
+      
+      if (catsRes.success) setCategories(catsRes.data || []);
+      if (prodsRes.success) setProducts(prodsRes.data || []);
+      if (servsRes.success) setServices(servsRes.data || []);
+      
+      setIsLoading(false);
+    }
+    loadData();
+  }, [selectedBranch]);
 
   useEffect(() => {
     if (currentView !== "splash") return;
@@ -99,7 +125,7 @@ export default function Home() {
       {currentView === "language" && (
         <LanguageSelection 
           onSelect={(lang) => {
-            setSelectedLanguage(lang);
+            setSelectedLanguage(lang as Language);
             setCurrentView("branch");
           }} 
         />
@@ -181,13 +207,17 @@ export default function Home() {
               <MobileHome 
                 branch={selectedBranch} 
                 language={selectedLanguage}
+                categories={categories}
+                products={products}
+                services={services}
+                isLoading={isLoading}
                 onProductClick={setSelectedProduct} 
                 onOpenPreferences={() => setIsPreferencesOpen(true)}
                 onNavigate={setActiveTab}
               />
             )}
-            {activeTab === "products" && <MobileProducts onProductClick={setSelectedProduct} />}
-            {activeTab === "services" && <MobileServices />}
+            {activeTab === "products" && <MobileProducts categories={categories} products={products} isLoading={isLoading} onProductClick={setSelectedProduct} />}
+            {activeTab === "services" && <MobileServices services={services} isLoading={isLoading} />}
             {activeTab === "branches" && <MobileBranches />}
             {activeTab === "contact" && <MobileContact />}
           </div>
