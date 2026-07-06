@@ -1,20 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F8F9FA;
-  --foreground: #1A1A1A;
-  --card: #FFFFFF;
+  --background: #0A0A0A;
+  --foreground: #FFFFFF;
+  --card: #121212;
   --sasi-red: #E50914;
   --sasi-black: #111111;
   --sasi-silver: #C9CDD2;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0B0B0B;
-    --foreground: #FFFFFF;
-    --card: #171717;
-  }
 }
 
 @theme inline {
