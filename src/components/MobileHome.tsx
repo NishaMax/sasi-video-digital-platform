@@ -3,12 +3,23 @@
 import { 
   Search, Phone, MessageCircle, MapPin, Grid, Home, Wrench, Map, User, 
   ChevronRight, Tv, Speaker, Smartphone, Shield, Wifi, Headphones, 
-  Monitor, Clock, ExternalLink
+  Monitor, Clock, ExternalLink, ChevronDown
 } from "lucide-react";
 
-export function MobileHome({ branch, onProductClick }: { branch: string, onProductClick: (product: any) => void }) {
+export function MobileHome({ 
+  branch, 
+  language,
+  onProductClick,
+  onOpenPreferences
+}: { 
+  branch: string, 
+  language: string,
+  onProductClick: (product: any) => void,
+  onOpenPreferences: () => void
+}) {
   const branchName = branch === "kalawana" ? "Kalawana" : "Ratnapura";
   const branchPhone = branch === "kalawana" ? "070 480 1560" : "076 417 7746";
+  const langCode = language === "english" ? "GB" : language === "sinhala" ? "LK" : "IN";
   
   const categories = [
     { name: "Televisions", count: "15 Items", icon: Tv },
@@ -79,9 +90,13 @@ export function MobileHome({ branch, onProductClick }: { branch: string, onProdu
         <button className="text-gray-400 p-2 hover:text-white transition-colors">
           <Search className="w-5 h-5" />
         </button>
-        <div className="flex items-center gap-1.5 bg-[#1A1A1A] border border-gray-800 px-3 py-1.5 rounded-full">
-          <MapPin className="w-3 h-3 text-sasi-red" />
-          <span className="text-xs text-gray-300 font-medium">{branchName}</span>
+        <div 
+          onClick={onOpenPreferences}
+          className="flex items-center gap-1.5 bg-[#1A1A1A] border border-gray-800 px-3 py-1.5 rounded-full cursor-pointer hover:border-gray-700 transition-colors"
+        >
+          <span className="font-extrabold text-[11px] text-white tracking-wider">{langCode}</span>
+          <span className="text-[11px] text-gray-300 font-semibold">{branchName}</span>
+          <ChevronDown className="w-3 h-3 text-gray-500 ml-0.5" />
         </div>
       </div>
 

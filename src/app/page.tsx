@@ -11,6 +11,7 @@ import { MobileBranches } from "@/components/MobileBranches";
 import { MobileContact } from "@/components/MobileContact";
 import { BottomNav, Tab } from "@/components/BottomNav";
 import { ProductDetail } from "@/components/ProductDetail";
+import { PreferencesSheet } from "@/components/PreferencesSheet";
 
 export default function Home() {
   const [doorState, setDoorState] = useState<"closed" | "opening" | "open">("closed");
@@ -19,12 +20,13 @@ export default function Home() {
   // "splash" -> "language" -> "branch" -> "home"
   const [currentView, setCurrentView] = useState<"splash" | "language" | "branch" | "home">("splash");
   
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
-  const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("english");
+  const [selectedBranch, setSelectedBranch] = useState<string>("kalawana");
   const [activeTab, setActiveTab] = useState<Tab>("home");
   
-  // Product Detail State
+  // Modals / Overlays
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
 
   useEffect(() => {
     if (currentView !== "splash") return;
@@ -114,7 +116,14 @@ export default function Home() {
       {/* Stage 4: Main Application Wrapper with Bottom Nav */}
       {currentView === "home" && selectedBranch && (
         <div className="w-full relative min-h-screen">
-          {activeTab === "home" && <MobileHome branch={selectedBranch} onProductClick={setSelectedProduct} />}
+          {activeTab === "home" && (
+            <MobileHome 
+              branch={selectedBranch} 
+              language={selectedLanguage}
+              onProductClick={setSelectedProduct} 
+              onOpenPreferences={() => setIsPreferencesOpen(true)}
+            />
+          )}
           {activeTab === "products" && <MobileProducts onProductClick={setSelectedProduct} />}
           {activeTab === "services" && <MobileServices />}
           {activeTab === "branches" && <MobileBranches />}
@@ -132,6 +141,16 @@ export default function Home() {
               onBack={() => setSelectedProduct(null)} 
             />
           )}
+          
+          {/* Preferences Bottom Sheet */}
+          <PreferencesSheet 
+            isOpen={isPreferencesOpen}
+            onClose={() => setIsPreferencesOpen(false)}
+            language={selectedLanguage}
+            setLanguage={setSelectedLanguage}
+            branch={selectedBranch}
+            setBranch={setSelectedBranch}
+          />
         </div>
       )}
     </main>

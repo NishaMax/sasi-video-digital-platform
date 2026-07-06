@@ -1,7 +1,10 @@
 import { Search, Tv, Speaker, Smartphone, Shield, Wifi, Headphones } from "lucide-react";
+import { useState } from "react";
 
 export function MobileProducts({ onProductClick }: { onProductClick: (product: any) => void }) {
-  const categories = ["All", "Televisions", "Audio Systems", "Mobile Accessories", "CCTV", "Networking"];
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  
+  const categories = ["All", "Televisions", "Audio Systems", "Mobile Accessories", "CCTV", "Networking", "Headphones"];
   
   const products = [
     { 
@@ -9,58 +12,68 @@ export function MobileProducts({ onProductClick }: { onProductClick: (product: a
       desc: "Crystal clear 4K UHD display with Smart Hub.",
       badge: "In Stock", 
       badgeColor: "bg-sasi-red",
-      icon: Tv
+      icon: Tv,
+      category: "Televisions"
     },
     { 
       name: "Sony HT-S40R Soundbar", 
       desc: "5.1ch real surround sound system with wireless rear.",
       badge: "Fast Service", 
-      badgeColor: "bg-[#2563EB]", // Blue for Fast Service
-      icon: Speaker
+      badgeColor: "bg-[#2563EB]", 
+      icon: Speaker,
+      category: "Audio Systems"
     },
     { 
       name: "JBL Flip 6 Bluetooth Speaker", 
       desc: "Portable waterproof speaker with punchy bass.",
       badge: "In Stock", 
       badgeColor: "bg-sasi-red",
-      icon: Speaker
+      icon: Speaker,
+      category: "Audio Systems"
     },
     { 
       name: "Hikvision 4-Camera CCTV Kit", 
       desc: "Full HD outdoor surveillance system.",
       badge: "In Stock", 
       badgeColor: "bg-sasi-red",
-      icon: Shield
+      icon: Shield,
+      category: "CCTV"
     },
     { 
       name: "TP-Link AC1200 WiFi Router", 
       desc: "Dual-band gigabit router for fast, reliable home internet.",
       badge: "In Stock", 
       badgeColor: "bg-sasi-red",
-      icon: Wifi
+      icon: Wifi,
+      category: "Networking"
     },
     { 
       name: "Sony WH-1000XM5 Headphones", 
       desc: "Industry-leading noise cancellation with 30-hour battery.",
       badge: "Trusted Service", 
-      badgeColor: "bg-[#F59E0B]", // Yellow for Trusted Service
-      icon: Headphones
+      badgeColor: "bg-[#F59E0B]", 
+      icon: Headphones,
+      category: "Headphones"
     },
     { 
       name: 'LG 55" OLED Smart TV', 
       desc: "Perfect blacks and vivid colors with self-lit OLED.",
       badge: "Available at Kalawana", 
       badgeColor: "bg-purple-600",
-      icon: Tv
+      icon: Tv,
+      category: "Televisions"
     },
     { 
       name: "Samsung Galaxy Buds2 Pro", 
       desc: "True wireless earbuds with ANC and Hi-Fi sound.",
       badge: "In Stock", 
       badgeColor: "bg-sasi-red",
-      icon: Smartphone
+      icon: Smartphone,
+      category: "Mobile Accessories"
     }
   ];
+
+  const filteredProducts = products.filter(p => selectedCategory === "All" || p.category === selectedCategory);
 
   return (
     <div className="flex flex-col bg-[#0A0A0A] text-white animate-in fade-in duration-500 font-sans w-full min-h-screen">
@@ -82,8 +95,9 @@ export function MobileProducts({ onProductClick }: { onProductClick: (product: a
           {categories.map((cat, i) => (
             <button 
               key={i} 
+              onClick={() => setSelectedCategory(cat)}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium transition-colors ${
-                i === 0 
+                selectedCategory === cat 
                   ? "bg-sasi-red text-white border border-sasi-red" 
                   : "bg-[#1A1A1A] border border-gray-800 text-gray-300 hover:border-gray-600"
               }`}
@@ -96,26 +110,32 @@ export function MobileProducts({ onProductClick }: { onProductClick: (product: a
 
       {/* Product Grid */}
       <div className="px-5 pb-24">
-        <div className="grid grid-cols-2 gap-4">
-          {products.map((product, i) => (
-            <div 
-              key={i} 
-              onClick={() => onProductClick(product)}
-              className="bg-[#121212] border border-gray-800/60 rounded-[20px] overflow-hidden flex flex-col cursor-pointer group hover:border-gray-700 transition-colors"
-            >
-              <div className="w-full h-[120px] bg-[#1A1A1A] relative flex items-center justify-center p-4">
-                 <product.icon className="w-12 h-12 text-gray-700 stroke-[1]" />
-                 <span className={`absolute bottom-3 left-3 ${product.badgeColor} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide z-10`}>
-                  {product.badge}
-                </span>
+        {filteredProducts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-10 text-gray-500">
+            <p>No products found in this category.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4">
+            {filteredProducts.map((product, i) => (
+              <div 
+                key={i} 
+                onClick={() => onProductClick(product)}
+                className="bg-[#121212] border border-gray-800/60 rounded-[20px] overflow-hidden flex flex-col cursor-pointer group hover:border-gray-700 transition-colors"
+              >
+                <div className="w-full h-[120px] bg-[#1A1A1A] relative flex items-center justify-center p-4">
+                   <product.icon className="w-12 h-12 text-gray-700 stroke-[1]" />
+                   <span className={`absolute bottom-3 left-3 ${product.badgeColor} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide z-10`}>
+                    {product.badge}
+                  </span>
+                </div>
+                <div className="p-4 flex-1 flex flex-col">
+                  <h3 className="text-sm font-bold text-gray-100 leading-tight mb-1">{product.name}</h3>
+                  <p className="text-[10px] text-gray-500 leading-snug line-clamp-2">{product.desc}</p>
+                </div>
               </div>
-              <div className="p-4 flex-1 flex flex-col">
-                <h3 className="text-sm font-bold text-gray-100 leading-tight mb-1">{product.name}</h3>
-                <p className="text-[10px] text-gray-500 leading-snug line-clamp-2">{product.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
