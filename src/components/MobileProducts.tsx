@@ -1,6 +1,6 @@
 import { Search, Tv, Speaker, Smartphone, Shield, Wifi, Headphones } from "lucide-react";
 
-export function MobileProducts() {
+export function MobileProducts({ onProductClick }: { onProductClick: (product: any) => void }) {
   const categories = ["All", "Televisions", "Audio Systems", "Mobile Accessories", "CCTV", "Networking"];
   
   const products = [
@@ -98,7 +98,11 @@ export function MobileProducts() {
       <div className="px-5 pb-24">
         <div className="grid grid-cols-2 gap-4">
           {products.map((product, i) => (
-            <div key={i} className="bg-[#121212] border border-gray-800/60 rounded-[20px] overflow-hidden flex flex-col cursor-pointer group hover:border-gray-700 transition-colors">
+            <div 
+              key={i} 
+              onClick={() => onProductClick(product)}
+              className="bg-[#121212] border border-gray-800/60 rounded-[20px] overflow-hidden flex flex-col cursor-pointer group hover:border-gray-700 transition-colors"
+            >
               <div className="w-full h-[120px] bg-[#1A1A1A] relative flex items-center justify-center p-4">
                  <product.icon className="w-12 h-12 text-gray-700 stroke-[1]" />
                  <span className={`absolute bottom-3 left-3 ${product.badgeColor} text-white text-[8px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide z-10`}>

@@ -38,8 +38,8 @@ Instead of building everything at once in the dark, we will build **step-by-step
 ### 📦 PHASE 4: Core Pages & "Ask Before You Visit" (In Progress)
 **Goal:** Build the product browsing experience and connect it to WhatsApp.
 - [x] Build the Product Listing Page with filters.
-- [ ] Build the Product Detail Page.
-- [ ] Implement the **"Ask Before You Visit"** button (Generates pre-filled WhatsApp message).
+- [x] Build the Product Detail Page.
+- [x] Implement the **"Ask Before You Visit"** button (Generates pre-filled WhatsApp message).
 - [x] Build Services, Branches, Contact, and About pages.
 - [ ] **Review Checkpoint:** Test the complete customer journey from Homepage ➔ Product ➔ WhatsApp.
 

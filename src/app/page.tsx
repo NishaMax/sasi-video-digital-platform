@@ -10,6 +10,7 @@ import { MobileServices } from "@/components/MobileServices";
 import { MobileBranches } from "@/components/MobileBranches";
 import { MobileContact } from "@/components/MobileContact";
 import { BottomNav, Tab } from "@/components/BottomNav";
+import { ProductDetail } from "@/components/ProductDetail";
 
 export default function Home() {
   const [doorState, setDoorState] = useState<"closed" | "opening" | "open">("closed");
@@ -21,6 +22,9 @@ export default function Home() {
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("home");
+  
+  // Product Detail State
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
   useEffect(() => {
     if (currentView !== "splash") return;
@@ -110,14 +114,24 @@ export default function Home() {
       {/* Stage 4: Main Application Wrapper with Bottom Nav */}
       {currentView === "home" && selectedBranch && (
         <div className="w-full relative min-h-screen">
-          {activeTab === "home" && <MobileHome branch={selectedBranch} />}
-          {activeTab === "products" && <MobileProducts />}
+          {activeTab === "home" && <MobileHome branch={selectedBranch} onProductClick={setSelectedProduct} />}
+          {activeTab === "products" && <MobileProducts onProductClick={setSelectedProduct} />}
           {activeTab === "services" && <MobileServices />}
           {activeTab === "branches" && <MobileBranches />}
           {activeTab === "contact" && <MobileContact />}
           
-          {/* Global Bottom Navigation */}
-          <BottomNav activeTab={activeTab} onChange={setActiveTab} />
+          {/* Global Bottom Navigation - Hide if product detail is open */}
+          {!selectedProduct && (
+            <BottomNav activeTab={activeTab} onChange={setActiveTab} />
+          )}
+
+          {/* Product Detail Overlay */}
+          {selectedProduct && (
+            <ProductDetail 
+              product={selectedProduct} 
+              onBack={() => setSelectedProduct(null)} 
+            />
+          )}
         </div>
       )}
     </main>

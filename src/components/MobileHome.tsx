@@ -6,7 +6,7 @@ import {
   Monitor, Clock, ExternalLink
 } from "lucide-react";
 
-export function MobileHome({ branch }: { branch: string }) {
+export function MobileHome({ branch, onProductClick }: { branch: string, onProductClick: (product: any) => void }) {
   const branchName = branch === "kalawana" ? "Kalawana" : "Ratnapura";
   const branchPhone = branch === "kalawana" ? "070 480 1560" : "076 417 7746";
   
@@ -174,7 +174,11 @@ export function MobileHome({ branch }: { branch: string }) {
       <div className="mb-8">
         <div className="flex overflow-x-auto gap-3 px-5 pb-2 scrollbar-hide">
           {featuredProducts.map((product, i) => (
-            <div key={i} className="min-w-[150px] max-w-[150px] bg-[#121212] border border-gray-800/60 rounded-2xl overflow-hidden cursor-pointer group hover:border-gray-700 transition-colors flex-shrink-0">
+            <div 
+              key={i} 
+              onClick={() => onProductClick({ ...product, desc: "Premium product available at Sasi Video. Ask us for more details." })}
+              className="min-w-[150px] max-w-[150px] bg-[#121212] border border-gray-800/60 rounded-2xl overflow-hidden cursor-pointer group hover:border-gray-700 transition-colors flex-shrink-0"
+            >
               {/* Image placeholder */}
               <div className="w-full h-[100px] bg-[#1A1A1A] flex items-center justify-center relative">
                 <product.icon className="w-10 h-10 text-gray-700 stroke-[1]" />
