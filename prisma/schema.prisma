@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  icon      String    // e.g. "Tv", "Speaker" (name of lucide icon)
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float?
+  badge       String?  // e.g. "In Stock"
+  badgeColor  String?  // e.g. "bg-sasi-red"
+  icon        String   // fallback icon name if no image
+  imageUrl    String?  // Cloudflare R2 / S3 url
+  
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  // Availability across branches
+  availableKalawana  Boolean @default(true)
+  availableRatnapura Boolean @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  badge       String?  
+  badgeColor  String?
+  icon        String
+  turnaround  String?  // e.g. "Same day - Both branches"
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

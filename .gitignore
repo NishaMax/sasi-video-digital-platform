@@ -45,3 +45,5 @@ phases.txt
 .vscode/
 .idea/
 scratch/
+
+/src/generated/prisma
