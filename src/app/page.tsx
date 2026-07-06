@@ -12,6 +12,7 @@ import { MobileContact } from "@/components/MobileContact";
 import { BottomNav, Tab } from "@/components/BottomNav";
 import { ProductDetail } from "@/components/ProductDetail";
 import { PreferencesSheet } from "@/components/PreferencesSheet";
+import { LanguageProvider, Language } from "@/lib/i18n";
 
 export default function Home() {
   const [doorState, setDoorState] = useState<"closed" | "opening" | "open">("closed");
@@ -20,7 +21,7 @@ export default function Home() {
   // "splash" -> "language" -> "branch" -> "home"
   const [currentView, setCurrentView] = useState<"splash" | "language" | "branch" | "home">("splash");
   
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("english");
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>("english");
   const [selectedBranch, setSelectedBranch] = useState<string>("kalawana");
   const [activeTab, setActiveTab] = useState<Tab>("home");
   
@@ -57,7 +58,8 @@ export default function Home() {
   }, [currentView]);
 
   return (
-    <main className="relative w-full min-h-screen overflow-x-hidden bg-background flex flex-col">
+    <LanguageProvider language={selectedLanguage}>
+      <main className="relative w-full min-h-screen overflow-x-hidden bg-background flex flex-col">
       
       {/* 
         Stage 1: Splash Screen Logo Reveal 
@@ -161,5 +163,6 @@ export default function Home() {
         </div>
       )}
     </main>
+    </LanguageProvider>
   );
 }

@@ -12,9 +12,9 @@ export function LanguageSelection({ onSelect }: { onSelect: (lang: string) => vo
   };
 
   const languages = [
-    { code: "si", label: "සිංහල", native: "සිංහල" },
-    { code: "ta", label: "தமிழ்", native: "தமிழ்" },
-    { code: "en", label: "English", native: "English" }
+    { code: "sinhala", label: "සිංහල", native: "සිංහල" },
+    { code: "tamil", label: "தமிழ்", native: "தமிழ்" },
+    { code: "english", label: "English", native: "English" }
   ];
 
   return (

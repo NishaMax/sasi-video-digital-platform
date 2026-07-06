@@ -5,6 +5,7 @@ import {
   ChevronRight, Tv, Speaker, Smartphone, Shield, Wifi, Headphones, 
   Monitor, Clock, ExternalLink, ChevronDown
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export function MobileHome({ 
   branch, 
@@ -19,6 +20,8 @@ export function MobileHome({
   onOpenPreferences: () => void,
   onNavigate: (tab: any) => void
 }) {
+  const { t } = useLanguage();
+  
   const branchName = branch === "kalawana" ? "Kalawana" : "Ratnapura";
   const branchPhone = branch === "kalawana" ? "070 480 1560" : "076 417 7746";
   const langCode = language === "english" ? "GB" : language === "sinhala" ? "LK" : "IN";
@@ -97,7 +100,7 @@ export function MobileHome({
           className="flex items-center gap-1.5 bg-[#1A1A1A] border border-gray-800 px-3 py-1.5 rounded-full cursor-pointer hover:border-gray-700 transition-colors"
         >
           <span className="font-extrabold text-[11px] text-white tracking-wider">{langCode}</span>
-          <span className="text-[11px] text-gray-300 font-semibold">{branchName}</span>
+          <span className="text-[11px] text-gray-300 font-semibold">{t("nav.home") === "Home" ? branchName : (branch === "kalawana" ? "කලවාන" : "රත්නපුර")}</span>
           <ChevronDown className="w-3 h-3 text-gray-500 ml-0.5" />
         </div>
       </div>
@@ -113,10 +116,10 @@ export function MobileHome({
           
           <div className="relative z-10">
             <span className="text-[10px] font-bold text-sasi-red uppercase tracking-[0.15em] block mb-2">
-              Entertainment • Electronics • Trust
+              {t("home.slogan")}
             </span>
             <h1 className="text-[22px] font-extrabold text-white mb-1 leading-tight">
-              Welcome to Sasi Video
+              {t("home.welcome")}
             </h1>
             <p className="text-xs text-gray-500 mb-0">{branchName} Branch</p>
           </div>
