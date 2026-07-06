@@ -132,7 +132,7 @@ export default function Home() {
           
           {/* Global Bottom Navigation - Hide if product detail is open */}
           {!selectedProduct && (
-            <BottomNav activeTab={activeTab} onChange={setActiveTab} />
+            <BottomNav activeTab={activeTab} onChange={setActiveTab} branch={selectedBranch} />
           )}
 
           {/* Product Detail Overlay */}
@@ -150,7 +150,13 @@ export default function Home() {
             language={selectedLanguage}
             setLanguage={setSelectedLanguage}
             branch={selectedBranch}
-            setBranch={setSelectedBranch}
+            setBranch={(newBranch) => {
+              setSelectedBranch(newBranch);
+              // If we are on services and switch to kalawana, redirect to home
+              if (activeTab === "services" && newBranch === "kalawana") {
+                setActiveTab("home");
+              }
+            }}
           />
         </div>
       )}
