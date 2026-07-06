@@ -1,65 +1,111 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
+  const [doorState, setDoorState] = useState<"closed" | "opening" | "open">("closed");
+  const [logoState, setLogoState] = useState<"hidden" | "revealing" | "revealed">("hidden");
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    // 0ms: Closed
+    // 500ms: Start opening doors
+    // 1300ms: Doors fully open, start revealing logo
+    // 2500ms: Logo fully revealed
+    // 3500ms: Logo moves to normal state/fade out to show content
+    
+    const t1 = setTimeout(() => {
+      setDoorState("opening");
+    }, 500);
+
+    const t2 = setTimeout(() => {
+      setDoorState("open");
+      setLogoState("revealing");
+    }, 1300);
+
+    const t3 = setTimeout(() => {
+      setLogoState("revealed");
+    }, 2500);
+
+    const t4 = setTimeout(() => {
+      setShowContent(true);
+    }, 3800);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="relative w-full min-h-screen overflow-hidden bg-background flex flex-col items-center justify-center">
+      
+      {/* 
+        This is a visual placeholder for what happens AFTER the doors open and logo completes. 
+        In Phase 2, this will be the Language / Branch selection.
+      */}
+      <div 
+        className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ${
+          showContent ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        <h1 className="text-3xl font-bold mb-4">Welcome to Sasi Video</h1>
+        <p className="text-sasi-silver">Language & Branch selection coming in Phase 2</p>
+      </div>
+
+      {/* Splash Screen Logo Reveal */}
+      <div 
+        className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ${
+          doorState === "open" && !showContent ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        <div 
+          className={`transform transition-all duration-1000 flex flex-col items-center ${
+            logoState === "revealing" || logoState === "revealed" ? "scale-100 opacity-100" : "scale-90 opacity-0"
+          }`}
+        >
+          <div className="relative w-64 h-32 md:w-96 md:h-48 mb-4">
+             <Image 
+               src="/Logo.png" 
+               alt="SASI VIDEO" 
+               fill 
+               className="object-contain drop-shadow-[0_0_15px_rgba(229,9,20,0.4)]"
+               priority
+             />
+          </div>
+          <div className="text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] text-center text-sasi-silver uppercase">
+            Entertainment • Electronics • Trust
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </div>
+
+      {/* The Doors */}
+      {doorState !== "open" && (
+        <div className="absolute inset-0 flex pointer-events-none z-50">
+          {/* Left Door */}
+          <div 
+            className={`w-1/2 h-full bg-sasi-black flex items-center justify-end overflow-hidden transition-transform duration-[1200ms] ease-in-out border-r-[1px] border-sasi-red/20 shadow-[5px_0_15px_rgba(229,9,20,0.1)] ${
+              doorState === "opening" ? "-translate-x-full" : "translate-x-0"
+            }`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {/* Soft inner glow on the edge */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-sasi-red/10 to-transparent"></div>
+          </div>
+
+          {/* Right Door */}
+          <div 
+            className={`w-1/2 h-full bg-sasi-black flex items-center justify-start overflow-hidden transition-transform duration-[1200ms] ease-in-out border-l-[1px] border-sasi-red/20 shadow-[-5px_0_15px_rgba(229,9,20,0.1)] ${
+              doorState === "opening" ? "translate-x-full" : "translate-x-0"
+            }`}
           >
-            Documentation
-          </a>
+            {/* Soft inner glow on the edge */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-sasi-red/10 to-transparent"></div>
+          </div>
         </div>
-      </main>
-    </div>
+      )}
+    </main>
   );
 }
