@@ -115,26 +115,88 @@ export default function Home() {
         />
       )}
 
-      {/* Stage 4: Main Application Wrapper with Bottom Nav */}
+      {/* Stage 4: Main Application Wrapper */}
       {currentView === "home" && selectedBranch && (
-        <div className="w-full relative min-h-screen">
-          {activeTab === "home" && (
-            <MobileHome 
-              branch={selectedBranch} 
-              language={selectedLanguage}
-              onProductClick={setSelectedProduct} 
-              onOpenPreferences={() => setIsPreferencesOpen(true)}
-              onNavigate={setActiveTab}
-            />
-          )}
-          {activeTab === "products" && <MobileProducts onProductClick={setSelectedProduct} />}
-          {activeTab === "services" && <MobileServices />}
-          {activeTab === "branches" && <MobileBranches />}
-          {activeTab === "contact" && <MobileContact />}
-          
-          {/* Global Bottom Navigation - Hide if product detail is open */}
+        <div className="w-full relative min-h-screen flex">
+
+          {/* ── DESKTOP SIDEBAR (hidden on mobile) ── */}
+          <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 w-56 lg:w-64 bg-[#0A0A0A] border-r border-gray-800/60 z-40 px-4 py-6">
+            {/* Logo */}
+            <div className="flex items-center gap-2.5 px-2 mb-10">
+              <div className="w-8 h-8 bg-sasi-red rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-black text-xs">SV</span>
+              </div>
+              <div>
+                <p className="text-white font-extrabold text-sm leading-none">SASI VIDEO</p>
+                <p className="text-gray-500 text-[9px] font-medium mt-0.5">{selectedBranch === "kalawana" ? "Kalawana Branch" : "Ratnapura Branch"}</p>
+              </div>
+            </div>
+
+            {/* Nav Items */}
+            <nav className="flex flex-col gap-1 flex-1">
+              {[
+                { id: "home", label: "Home", icon: "🏠" },
+                { id: "products", label: "Products", icon: "📦" },
+                ...(selectedBranch !== "kalawana" ? [{ id: "services", label: "Services", icon: "🔧" }] : []),
+                { id: "branches", label: "Branches", icon: "📍" },
+                { id: "contact", label: "Contact", icon: "✉️" }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id as any)}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all text-left w-full ${
+                    activeTab === item.id
+                      ? "bg-sasi-red/10 text-sasi-red border border-sasi-red/20"
+                      : "text-gray-400 hover:text-white hover:bg-[#1A1A1A]"
+                  }`}
+                >
+                  <span>{item.icon}</span>
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+
+            {/* Bottom: Preferences + WhatsApp */}
+            <div className="flex flex-col gap-3 mt-4">
+              <button
+                onClick={() => setIsPreferencesOpen(true)}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-[#1A1A1A] transition-all w-full"
+              >
+                <span>⚙️</span> Preferences
+              </button>
+              <a
+                href="https://wa.me/94764177746"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-white bg-[#22C55E] hover:bg-green-600 transition-colors shadow-lg"
+              >
+                💬 WhatsApp Us
+              </a>
+            </div>
+          </aside>
+
+          {/* ── MAIN CONTENT (offset by sidebar on md+) ── */}
+          <div className="w-full md:ml-56 lg:ml-64">
+            {activeTab === "home" && (
+              <MobileHome 
+                branch={selectedBranch} 
+                language={selectedLanguage}
+                onProductClick={setSelectedProduct} 
+                onOpenPreferences={() => setIsPreferencesOpen(true)}
+                onNavigate={setActiveTab}
+              />
+            )}
+            {activeTab === "products" && <MobileProducts onProductClick={setSelectedProduct} />}
+            {activeTab === "services" && <MobileServices />}
+            {activeTab === "branches" && <MobileBranches />}
+            {activeTab === "contact" && <MobileContact />}
+          </div>
+
+          {/* ── MOBILE BOTTOM NAV (hidden on md+) ── */}
           {!selectedProduct && (
-            <BottomNav activeTab={activeTab} onChange={setActiveTab} branch={selectedBranch} />
+            <div className="md:hidden">
+              <BottomNav activeTab={activeTab} onChange={setActiveTab} branch={selectedBranch} />
+            </div>
           )}
 
           {/* Product Detail Overlay */}
@@ -154,7 +216,6 @@ export default function Home() {
             branch={selectedBranch}
             setBranch={(newBranch) => {
               setSelectedBranch(newBranch);
-              // If we are on services and switch to kalawana, redirect to home
               if (activeTab === "services" && newBranch === "kalawana") {
                 setActiveTab("home");
               }
