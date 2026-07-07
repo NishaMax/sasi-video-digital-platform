@@ -58,8 +58,8 @@ Instead of building everything at once in the dark, we will build **step-by-step
 - [x] Wired `MobileHome`, `MobileProducts`, `MobileServices` to live DB data.
 - [x] Branch-aware product filtering — Kalawana/Ratnapura products auto-filtered.
 - [x] Loading spinners while data is being fetched.
-- [ ] **Build the Admin CMS Dashboard** (Add/Edit/Delete products & services without touching code).
-- [ ] Connect **Cloudflare R2** for product image uploads via CMS.
+- [x] **Build the Admin CMS Dashboard** (Add/Edit/Delete products & services without touching code).
+- [x] Connect **Cloudflare R2** (or other image storage) for product image uploads via CMS.
 - [ ] **Review Checkpoint:** Test adding a product via the CMS and seeing it appear live on the website.
 
 ### 🚀 PHASE 6: Polish, SEO & Launch

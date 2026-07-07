@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { ICON_OPTIONS, BADGE_COLOR_OPTIONS } from "@/lib/adminConstants";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { ImageUpload } from "./ImageUpload";
 
 type Category = { id: string; name: string };
 
@@ -24,12 +24,13 @@ export function ProductForm({
 }) {
   const [state, formAction, pending] = useActionState(action, undefined);
   const router = useRouter();
+  
+  const dv = defaultValues || {};
+  const [imageUrl, setImageUrl] = useState(dv.imageUrl || "");
 
   useEffect(() => {
     if (state?.success) router.push("/admin/products");
   }, [state, router]);
-
-  const dv = defaultValues || {};
 
   return (
     <div className="p-8 max-w-2xl">
@@ -47,6 +48,12 @@ export function ProductForm({
             {state.error}
           </div>
         )}
+
+        {/* Image Upload */}
+        <div>
+          <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Product Image</label>
+          <ImageUpload value={imageUrl} onChange={setImageUrl} />
+        </div>
 
         {/* Name */}
         <div>
@@ -84,9 +91,9 @@ export function ProductForm({
           </div>
         </div>
 
-        {/* Icon */}
+        {/* Icon (Fallback) */}
         <div>
-          <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Icon *</label>
+          <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Icon (Fallback) *</label>
           <select name="icon" defaultValue={dv.icon || ""} required
             className="w-full bg-[#1A1A1A] border border-gray-700/60 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-red-600/60 focus:ring-1 focus:ring-red-600/20 transition-all">
             <option value="">Select icon...</option>
@@ -94,6 +101,7 @@ export function ProductForm({
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
           </select>
+          <p className="text-[10px] text-gray-500 mt-1.5">This icon will be used if no image is uploaded above.</p>
         </div>
 
         {/* Badge text + color */}
@@ -114,14 +122,6 @@ export function ProductForm({
               ))}
             </select>
           </div>
-        </div>
-
-        {/* Image URL */}
-        <div>
-          <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Image URL</label>
-          <input name="imageUrl" defaultValue={dv.imageUrl || ""}
-            placeholder="https://... (leave blank to use icon)"
-            className="w-full bg-[#1A1A1A] border border-gray-700/60 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm outline-none focus:border-red-600/60 focus:ring-1 focus:ring-red-600/20 transition-all" />
         </div>
 
         {/* Branch availability */}

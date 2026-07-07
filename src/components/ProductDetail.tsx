@@ -1,11 +1,12 @@
 import { ArrowLeft, Share2, MessageCircle, Shield, Truck, Settings } from "lucide-react";
+import { getIcon } from "@/lib/icons";
 
 export function ProductDetail({ product, onBack }: { product: any, onBack: () => void }) {
   const whatsappMessage = `Hi Sasi Video, I am interested in the ${product.name}. Could you give me more details about price and availability?`;
   const whatsappUrl = `https://wa.me/94771234567?text=${encodeURIComponent(whatsappMessage)}`;
   
   // Dynamic icon component
-  const IconComponent = product.icon;
+  const IconComponent = getIcon(product.icon);
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#0A0A0A] text-white flex flex-col animate-in slide-in-from-right duration-300 font-sans overflow-y-auto pb-24">
@@ -21,18 +22,30 @@ export function ProductDetail({ product, onBack }: { product: any, onBack: () =>
       </div>
 
       {/* Hero Image / Icon */}
-      <div className="w-full h-[300px] bg-[#121212] flex items-center justify-center relative border-b border-gray-800/60">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] to-transparent opacity-60"></div>
-        {IconComponent && <IconComponent className="w-24 h-24 text-gray-700 stroke-[1] relative z-10" />}
-        <span className={`absolute top-4 left-5 ${product.badgeColor} text-white text-[10px] font-bold px-3 py-1 rounded-md uppercase tracking-wider z-10 shadow-lg`}>
-          {product.badge}
-        </span>
+      <div className="w-full h-[300px] bg-[#121212] flex items-center justify-center relative border-b border-gray-800/60 overflow-hidden">
+        {product.imageUrl ? (
+          <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover relative z-0 opacity-90" />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] to-transparent opacity-60"></div>
+            {IconComponent && <IconComponent className="w-24 h-24 text-gray-700 stroke-[1] relative z-10" />}
+          </>
+        )}
+        
+        {product.badge && (
+          <span className={`absolute top-4 left-5 ${product.badgeColor || "bg-red-600"} text-white text-[10px] font-bold px-3 py-1 rounded-md uppercase tracking-wider z-10 shadow-lg`}>
+            {product.badge}
+          </span>
+        )}
       </div>
 
       {/* Details Section */}
       <div className="px-5 py-6">
         <h1 className="text-2xl font-extrabold text-white mb-2 leading-tight">{product.name}</h1>
-        <p className="text-sm text-gray-400 mb-6 leading-relaxed">{product.desc}</p>
+        {product.price && (
+          <p className="text-xl font-bold text-sasi-red mb-3">Rs. {product.price.toLocaleString()}</p>
+        )}
+        <p className="text-sm text-gray-400 mb-6 leading-relaxed">{product.description}</p>
         
         {/* Value Props */}
         <div className="grid grid-cols-3 gap-3 mb-8 border-y border-gray-800/60 py-5">
